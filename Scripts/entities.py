@@ -72,7 +72,7 @@ class LoCRespMARCXML:
         otherxp = '//marcxml:datafield[@tag="100"]/marcxml:subfield[@code="d"]'
         loc_046g = self.marcxml.xpath(rdaxp, namespaces=ns)
         if len(loc_046g) > 0:
-            return loc_046g[0].text[-4:]
+            return loc_046g[0].text[:4]
         else:
             loc_100d = self.marcxml.xpath(otherxp, namespaces=ns)
             if len(loc_100d) > 0 and re.match('^\d{4}-\d{4}$',
@@ -336,10 +336,10 @@ def main():
                     oclc_res1_subj_score = get_CUL_score(subject,
                                                          oclc_res1_subj)
                     if rjson.get_field('birthDate') is not None:
-                        oclc_res1_bdate = rjson.get_field('birthDate')[:4]
+                        oclc_res1_bdate = rjson.get_field('birthDate')
 
                     if rjson.get_field('deathDate') is not None:
-                        oclc_res1_ddate = rjson.get_field('deathDate')[-4:]
+                        oclc_res1_ddate = rjson.get_field('deathDate')
 
                     oclc_sameas_query = (sameas_url
                                          + urllib.parse.quote(oclc_res1_uri))
@@ -383,12 +383,12 @@ def main():
                     oclc_res2_score = rjson.get_field('score')
                     oclc_res2_subj = rjson.get_field('topic')
                     oclc_res2_subj_score = get_CUL_score(subject,
-                                                         oclc_res1_subj)
+                                                         oclc_res2_subj)
                     if rjson.get_field('birthDate') is not None:
-                        oclc_res2_bdate = rjson.get_field('birthDate')[:4]
+                        oclc_res2_bdate = rjson.get_field('birthDate')
 
                     if rjson.get_field('deathDate') is not None:
-                        oclc_res2_ddate = rjson.get_field('deathDate')[-4:]
+                        oclc_res2_ddate = rjson.get_field('deathDate')
 
                     oclc_sameas_query2 = (sameas_url +
                                           urllib.parse.quote(oclc_res2_uri))
@@ -402,9 +402,9 @@ def main():
                             mx = LoCRespMARCXML(oclc_res2_loc_uri)
                             oclc_res2_loc_byear = mx.get_loc_bdate()
                             oclc_res2_loc_dyear = mx.get_loc_ddate()
-                            loc_affs = mx.get_loc_aff()
+                            loc2_affs = mx.get_loc_aff()
                             oclc_res2_loc_aff_score = get_CUL_score(publisher,
-                                                                    loc_affs)
+                                                                    loc2_affs)
                         elif 'viaf.org' in oclc_sameas['sameAs'][n]:
                             oclc_res2_viaf_uri = oclc_sameas['sameAs'][n]
                             print(oclc_res2_viaf_uri)

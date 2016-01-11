@@ -84,3 +84,34 @@ With the Results CSV provided here, the plan is to review and see if these match
 ##Entities.py
 
 This is built to, I hope, become the basis for a metadata entity matching python library that can work with common external library data sources - hence the preliminary work with classes (to be broken out into modules). Any feedback welcome, though its a work in progress.
+
+##Results.csv
+
+Guide to fields in CSV reports generated:
+
+Each row is based on the separate dc:creator field instances to be reconciled. It is not a unique instance of every dc:creator field across the dataset as other contextual information from the record is being used for name entity matching rankings (title of work, affiliation, subjects, publication date...).
+
+  - "record_identifier": oai record identifier for ecommons DC record. Used as way to confirm entity matching updates pathway.
+  - "ecommons_entity_name": name of field to be matched. For ecommons DC records, using dc:creator, and all instances are literals/text strings. Would like to test with set also containing URIs or other identifiers next.
+  - "ecommons_title": title of work described in the ecommons DC record.
+  - "ecommons_title_year": year of publication of the work.
+  - "ecommons_subject":
+  - "ecommons_publisher":
+  - "search_url"
+  - "OCLC_result[n]_preflabel"
+  - "OCLC_result[n]_birthdate"
+  - "OCLC_result[n]_deathdate"
+  - "OCLC_result[n]_score"
+  - "OCLC_result[n]_subject"
+  - "OCLC_result[n]_subject_CUL_score"
+  - "OCLC_result[n]_OCLC_URI"
+  - "OCLC_result[n]_LoC_preflabel"
+  - "OCLC_result[n]_LoC_URI"
+  - "OCLC_result[n]_LoC_birthdate"
+  - "OCLC_result[n]_LoC_deathdate"
+  - "OCLC_result[n]_LoC_affiliation_CUL_score"
+  - "OCLC_result[n]_VIAF_URI"
+  - "OCLC_result[n]_VIAF_title_CUL_score"
+  - "OCLC_result[n]_VIAF_affiliation_CUL_score"
+  - "OCLC_result[n]_ISNI_URI"
+  - "OCLC_result[n]_Wiki_URI"
