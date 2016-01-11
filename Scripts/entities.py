@@ -164,6 +164,7 @@ class WikiSPARQL:
         else:
             return None
 
+
 class OCLCSearchResp:
     def __init__(self, json):
         self.json = json
@@ -250,6 +251,15 @@ def get_CUL_score(record_elems, resp_elems):
         for n in range(len(record_elems)):
             score = str(fuzz.token_sort_ratio(record_elems[n], resp_elems))
             scores.append(score)
+        return max(scores)
+    #only two lists
+    elif not isinstance(record_elems, str) and not isinstance(resp_elems, str):
+        scores = []
+        for n in range(len(record_elems)):
+            for m in range(len(resp_elems)):
+                score = str(fuzz.token_sort_ratio(record_elems[n],
+                            resp_elems[m]))
+                scores.append(score)
         return max(scores)
     else:
         return None

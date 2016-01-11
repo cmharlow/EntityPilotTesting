@@ -4,7 +4,7 @@
 
 ###[Ecommons](https://ecommons.cornell.edu)
 
-OAI-DC Overview:
+Ecommons OAI-PMH Simple DC Overview:
 
 ```
 {http://purl.org/dc/elements/1.1/}contributor: |                         |    681/27821 |   2%
@@ -94,24 +94,25 @@ Each row is based on the separate dc:creator field instances to be reconciled. I
   - "record_identifier": oai record identifier for ecommons DC record. Used as way to confirm entity matching updates pathway.
   - "ecommons_entity_name": name of field to be matched. For ecommons DC records, using dc:creator, and all instances are literals/text strings. Would like to test with set also containing URIs or other identifiers next.
   - "ecommons_title": title of work described in the ecommons DC record.
-  - "ecommons_title_year": year of publication of the work.
-  - "ecommons_subject":
-  - "ecommons_publisher":
-  - "search_url"
-  - "OCLC_result[n]_preflabel"
-  - "OCLC_result[n]_birthdate"
-  - "OCLC_result[n]_deathdate"
-  - "OCLC_result[n]_score"
-  - "OCLC_result[n]_subject"
-  - "OCLC_result[n]_subject_CUL_score"
-  - "OCLC_result[n]_OCLC_URI"
-  - "OCLC_result[n]_LoC_preflabel"
-  - "OCLC_result[n]_LoC_URI"
-  - "OCLC_result[n]_LoC_birthdate"
-  - "OCLC_result[n]_LoC_deathdate"
-  - "OCLC_result[n]_LoC_affiliation_CUL_score"
-  - "OCLC_result[n]_VIAF_URI"
-  - "OCLC_result[n]_VIAF_title_CUL_score"
-  - "OCLC_result[n]_VIAF_affiliation_CUL_score"
-  - "OCLC_result[n]_ISNI_URI"
-  - "OCLC_result[n]_Wiki_URI"
+  - "ecommons_title_year": The year of publication of the work taken from the Ecommons DC record. Not sure I can really use this for any meaningful entity disambiguation.
+  - "ecommons_subject": Subjects from the Ecommons DC record. Stored as a list that are then matched (simply using Levenshtein matching) with subjects from the OCLC Entity Search Results topic. Highest score is stored in OCLC_result[n]_subject_CUL_score (below).
+  - "ecommons_publisher": The publisher taken from the ecommons DC record. This field, for the simple DC OAI-PMH field from Ecommons seems to correlate with the academic affiliations, which makes some sense for ecommons as it is an institutional repository. Used to match against affiliations in other datasets, explained below.
+  - "search_url": The OCLC Entity Search URL, stored for debugging/secondary check purposes.
+  - "OCLC_result[n]_preflabel": The OCLC Entity Search Result preferred label. For this experiment, only the top 2 results are grabbed and processed.
+  - "OCLC_result[n]_birthdate": The OCLC Entity Search Result birthdate. Maybe find way to match with record entity names where the life dates information has been normalized out.
+  - "OCLC_result[n]_deathdate": The OCLC Entity Search Result deathdate. Same normalization/matching note as above.
+  - "OCLC_result[n]_score": The OCLC Entity Search Result score.
+  - "OCLC_result[n]_subject": The OCLC Entity Search Result topic field (usually/only ever 1?).
+  - "OCLC_result[n]_subject_CUL_score": The levenshtein matching score of the OCLC Entity Search Result topic and the subject fields from the original ecommons DC record. All the subjects in both records are compared, and the highest result returned.
+  - "OCLC_result[n]_OCLC_URI": The OCLC Entity URI for the result.
+  - "OCLC_result[n]_LoC_preflabel": The Library of Congress preferred label, returned using the OCLC Entity URI, the sameAs service, then the id.loc.gov APIs and N-Triples result.
+  - "OCLC_result[n]_LoC_URI": The Library of Congress URI for the entity, returned using the OCLC Entity URI. Used for retrieving the Library of Congress preferred label (above) and the LoC information below.
+  - "OCLC_result[n]_LoC_birthdate": The Library of Congress birth year for the entity, taken from the MARC/XML record available via id.loc.gov. Year is returned from either the 046f or, if the 046 is not present, the 100d[:4].
+  - "OCLC_result[n]_LoC_deathdate": The Library of Congress death year for the entity, taken from the MARC/XML record available via id.loc.gov. Year is returned from either the 046f or, if the 046 is not present, the 100d[-4:]
+  - "OCLC_result[n]_LoC_affiliation_CUL_score": If the LoC record has a 373a, those entries are matched against the publisher field in the original ecommons DC record and the score returned. None have had 373a's yet. Possibility of doing this matching with keyword searching in 670s, seems too vague though.
+  - "OCLC_result[n]_VIAF_URI": The VIAF URI for the entity, retrieved from the OCLC Entity SameAs API. Used for the calls below.
+  - "OCLC_result[n]_VIAF_title_CUL_score": Via the VIAF API's resulting MARC/XML records, all the titles (510a) are matched with the title in the original ecommons dc:title, and a simple matching result returned.
+  - "OCLC_result[n]_VIAF_affiliation_CUL_score": Via the VIAF API's resulting MARC/XML records, all the titles (910a) are matched with the title in the original ecommons dc:publisher, and a simple matching result returned.
+  - "OCLC_result[n]_ISNI_URI": The ISNI URI for the entity retrieved via the OCLC Entity SameAs API. Not used for further matching yet, as it seems to be repeating information from other datasets.
+  - "OCLC_result[n]_Wiki_URI": The Wikidata URI for the entity, retrieved via the OCLC Entity SameAs API. Used then to generate a SPARQL query for the Wikidata endpoint to retrieve other information about the entity.
+  - "OCLC_result[n]_Wiki_aff_CUL_score": The Wikidata URI for the entity, retrieved via the OCLC Entity SameAs API, is used to generate a SPARQL query for the Wikidata endpoint to retrieve the employers of the entity. That is then matched against the dc:publisher field in the ecommons DC record. Not sure why scores aren't being returned at present, as the titles are. Definite case of matching lists to lists.
