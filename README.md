@@ -60,3 +60,27 @@ Notes:
 - 71 unique headings have parenthesis. Many include middle names or full names in parenthesis. Some include qualifiers or role terms in parenthesis (uncertain if authority record headings qualifiers or concatenated role terms, looks to be mix of both).
 
 **All unique values in that field with counts are in [ECommonsCreatorsUnique.txt](ECommonsCreatorsUnique.txt)**
+
+##Matching Process
+
+**Proposal**: Personal names (primary focus here) are best automatically matched using:
+
+1. life dates (in OCLC Entity response, id.loc.gov, VIAF, Wikidata, ...). With exact match here and above average score for matching name strings (this needs to be firmed down as number ranges to both OCLC Entities score and other string matching possibilities)
+2. Well above average score for matching name strings and one or more of the following:
+  a. >90% subject matching (subjects in OCLC Entity response, original DC records, Wikidata...)
+  b. >90% affiliation matching (publishers in original DC records *for this example*, 373 in id.loc.gov MARC response, 510 in VIAF, wdt:P108 in wikidata... (ISNI seems to repeat other data sources' affiliations))
+  c. Matching in some way of role terms/relator codes? Need to explore further.
+  d. Other?
+3. Match of URI in source data (not seeing any so far in the original DC records for this example) with any/multiple of OCLC Entity SameAs URIs or identifiers from those URIs (i.e. the n12344556 from id.loc.gov URI).
+
+This matching could occur without Entity pilot, but that provides a good starting point for exploring a number of data sources. What could help with this jumping off point:
+
+1. Putting sameAs links in entity search response. This could help simplify somewhat this process, as well as maybe help with secondary de-duping of OCLC Entity Search responses.
+2. Providing multi-index searching (being able to search name and associated dates from the beginning to get better results, matching)
+3. Allowing fuzzy matching parameters to capture name labels that also have other information attached in the same field (as often happens with non-MARC metadata). Examples: names with dates, role terms, etc. Otherwise, this requires (per usual, so its not more effort than regular metadata matching and enhancement work) normalization work before running against OCLC Entity search API for decent results.
+
+With the Results CSV provided here, the plan is to review and see if these matching points could work. Any fields with 'CUL score' in them means the script does basic levenshtein text matching of a field in the DC record and a field returned from one of the authorities/external data sources.
+
+##Entities.py
+
+This is built to, I hope, become the basis for a metadata entity matching python library that can work with common external library data sources - hence the preliminary work with classes (to be broken out into modules). Any feedback welcome, though its a work in progress.
