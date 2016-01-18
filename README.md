@@ -67,10 +67,10 @@ Notes:
 
 1. life dates (in OCLC Entity response, id.loc.gov, VIAF, Wikidata, ...). With exact match here and above average score for matching name strings (this needs to be firmed down as number ranges to both OCLC Entities score and other string matching possibilities)
 2. Well above average score for matching name strings and one or more of the following:
-  a. >90% subject matching (subjects in OCLC Entity response, original DC records, Wikidata...)
-  b. >90% affiliation matching (publishers in original DC records *for this example*, 373 in id.loc.gov MARC response, 510 in VIAF, wdt:P108 in wikidata... (ISNI seems to repeat other data sources' affiliations))
-  c. Matching in some way of role terms/relator codes? Need to explore further.
-  d. Other?
+    3. >90% subject matching (subjects in OCLC Entity response, original DC records, Wikidata...)
+    4. >90% affiliation matching (publishers in original DC records *for this example*, 373 in id.loc.gov MARC response, 510 in VIAF, wdt:P108 in wikidata... (ISNI seems to repeat other data sources' affiliations))
+    5. Matching in some way of role terms/relator codes? Need to explore further.
+    6. Other?
 3. Match of URI in source data (not seeing any so far in the original DC records for this example) with any/multiple of OCLC Entity SameAs URIs or identifiers from those URIs (i.e. the n12344556 from id.loc.gov URI).
 
 This matching could occur without Entity pilot, but that provides a good starting point for exploring a number of data sources. What could help with this jumping off point:
